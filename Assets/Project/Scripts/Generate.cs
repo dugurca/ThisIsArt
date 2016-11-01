@@ -15,7 +15,7 @@ namespace Assets.Project.Scripts
 
         void GenerateCubeArt()
         {
-            const int n = 25000;
+            const int n = 10000;
             const float spread = n/25f;
             var lst = new List<GameObject>();
             for (int i = 0; i < n; i++)
