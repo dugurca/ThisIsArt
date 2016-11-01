@@ -22,7 +22,7 @@ namespace Assets.Project.Scripts
             {
                 lst.Add(CreateCube(spread, 10));
             }
-            Application.CaptureScreenshot(ArtFolder + DateTime.Now.Ticks + ".png", 4);
+            Application.CaptureScreenshot(ArtFolder + DateTime.Now.Ticks + ".jpg", 2);
 
             return;
             foreach (var go in lst)
