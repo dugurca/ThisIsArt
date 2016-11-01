@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 namespace Assets.Project.Scripts
@@ -8,26 +9,48 @@ namespace Assets.Project.Scripts
     public class Generate : MonoBehaviour
     {
         const string ArtFolder = "Art/";
-        void Start ()
+        readonly List<GameObject> _artObjectsList = new List<GameObject>();
+
+        void Update()
         {
-            GenerateCubeArt();
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                TakeScreenShot();
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                GenerateCubeArt();
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                ClearArt();
+            }
+        }
+
+        void ClearArt()
+        {
+            foreach (var o in _artObjectsList)
+            {
+                Destroy(o);
+            }
+            _artObjectsList.Clear();
+        }
+
+        void TakeScreenShot()
+        {
+            Application.CaptureScreenshot(ArtFolder + DateTime.Now.Ticks + ".jpg", 2);
         }
 
         void GenerateCubeArt()
         {
             const int n = 10000;
             const float spread = n/25f;
-            var lst = new List<GameObject>();
+            
             for (int i = 0; i < n; i++)
             {
-                lst.Add(CreateCube(spread, 10));
-            }
-            Application.CaptureScreenshot(ArtFolder + DateTime.Now.Ticks + ".jpg", 2);
-
-            return;
-            foreach (var go in lst)
-            {
-                Destroy(go);
+                var go = CreateCube(spread, 10);
+                go.transform.parent = transform;
+                _artObjectsList.Add(go);
             }
         }
 
@@ -37,7 +60,11 @@ namespace Assets.Project.Scripts
             cube.transform.position = Random.insideUnitSphere * spread;
             cube.transform.rotation = Random.rotation;
             cube.transform.localScale = Vector3.one*scale;
-            cube.GetComponent<Renderer>().material.color = Random.ColorHSV(0, 1);
+            var rend = cube.GetComponent<Renderer>();
+            rend.material.color = Random.ColorHSV(0, 1);
+            rend.receiveShadows = false;
+            rend.shadowCastingMode = ShadowCastingMode.Off;
+            cube.GetComponent<Collider>().enabled = false;
             return cube;
         }
     }
