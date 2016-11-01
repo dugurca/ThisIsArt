@@ -7,6 +7,7 @@ namespace Assets.Project.Scripts
 {
     public class Generate : MonoBehaviour
     {
+        const string ArtFolder = "Art/";
         void Start ()
         {
             GenerateCubeArt();
@@ -21,7 +22,7 @@ namespace Assets.Project.Scripts
             {
                 lst.Add(CreateCube(spread, 10));
             }
-            Application.CaptureScreenshot(DateTime.Now.Ticks + ".png", 4);
+            Application.CaptureScreenshot(ArtFolder + DateTime.Now.Ticks + ".png", 4);
 
             return;
             foreach (var go in lst)
